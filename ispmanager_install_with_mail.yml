@@ -44,4 +44,4 @@
     - { role: reboot , when: update_packages.changed }
     - { role: install_basic_utilities }
 # ISPmanager install and configuring
-    - { role: ispmanager, isp_activation_key: "", FTP: true, MYSQL: true, WEB: true, SSL: true, MAIL: true, ADD_USER: true, user_name: "www-root" }
+    - { role: ispmanager, isp_activation_key: "", FTP: true, MYSQL: true, WEB: true, PHPMYADMIN: true, SSL: true, MAIL: true, ADD_USER: true, user_name: "www-root" }
