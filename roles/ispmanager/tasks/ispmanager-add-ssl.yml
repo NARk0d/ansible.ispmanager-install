@@ -1,0 +1,11 @@
+---
+- name: ISPmanager. Install Let's Encrypt module.
+  shell: /usr/local/mgr5/sbin/mgrctl -m ispmgr plugin name=ispmanager-plugin-letsencrypt clicked_button=install sok=ok
+
+- name: ISPmanager. Prepare installing Let's Encrypt module.
+  shell: /usr/local/mgr5/sbin/mgrctl -m ispmgr plugin.settings plugin_settings=letsencrypt sok=ok
+
+- name: Pause 1 minute
+  pause:
+    minutes: 1
+

@@ -1,0 +1,26 @@
+---
+- name: ISPmanager. ProFTPd. Include variables.
+  include_vars: "proftpd_{{ ansible_os_family|lower }}.yml"
+
+- name: ISPmanager. Install ProFTPd
+  shell: /usr/local/mgr5/sbin/mgrctl -m ispmgr feature.edit elid=ftp packagegroup_ftp=proftp sok=ok
+
+- name: Pause 2 minutes
+  pause:
+    minutes: 2
+
+- name: ISPmanager. ProFTPd. Set passive ports.
+  replace:
+    dest: "{{ proftpd_conf }}"
+    regexp: "^PassivePorts"
+    replace: "PassivePorts 35000 35001"
+    backup: yes
+
+- name: ISPmanager. ProFTPd. Edit hosts file.
+  shell: echo "127.0.0.1 "`hostname` >> /etc/hosts
+
+- name: ISPmanager. Restart ProFTPd
+  service:
+    name: proftpd
+    state: restarted
+

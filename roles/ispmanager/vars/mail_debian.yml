@@ -1,0 +1,4 @@
+---
+exim_service: "exim4"
+exim_conf: "/etc/exim4/exim4.conf.template"
+

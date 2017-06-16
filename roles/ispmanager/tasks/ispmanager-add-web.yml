@@ -1,0 +1,12 @@
+---
+- name: ISPmanager. Include variables.
+  include_vars: "web_ubuntu.yml"
+  when: ansible_distribution|lower == "ubuntu"
+
+- name: ISPmanager. Install Nginx, Apache2 + MPM ITK, PHP, PHP-Fpm and Logrotate.
+  shell: /usr/local/mgr5/sbin/mgrctl -m ispmgr feature.edit elid=web package_awstats=off package_logrotate=on package_nginx=on package_php=on package_php-fpm=on packagegroup_apache={{packagegroup_apache}} sok=ok
+
+- name: Pause 2 minutes
+  pause:
+    minutes: 2
+

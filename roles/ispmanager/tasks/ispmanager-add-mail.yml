@@ -1,0 +1,23 @@
+---
+- name: ISPamanger. Mail. Include variables .
+  include_vars: "mail_{{ ansible_os_family|lower }}.yml"
+
+- name: ISPmanager. Install Exim, Dovecot, ClamAV, SpamAssassin, OpenDKIM, Sieve, Greylisting, AfterLogic .
+  shell: /usr/local/mgr5/sbin/mgrctl -m ispmgr feature.edit elid=email package_afterlogic=on package_clamav=on package_clamav-postfix=off package_clamav-sendmail=off package_dovecot=on package_greylist-postfix=off package_greylist-sendmail=off package_opendkim=on package_opendkim-postfix=off package_opendkim-sendmail=off package_postgrey=on package_roundcube=off package_sieve=on package_spamassassin=on package_spamassassin-postfix=off package_spamassassin-sendmail=off packagegroup_mta=exim sok=ok
+
+- name: Pause 5 minutes
+  pause:
+    minutes: 5
+
+- name: ISPmanager. Exim fix local domains .
+  replace:
+    dest: "{{ exim_conf }}"
+    regexp: '(\s+)domains = \!\+dummy_domains$'
+    replace: '\1domains = !+dummy_domains : !+local_domains'
+    backup: yes
+
+- name: Exim restarting .
+  service:
+    name: "{{ exim_service }}"
+    state: restarted
+

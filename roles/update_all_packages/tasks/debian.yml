@@ -1,0 +1,9 @@
+---
+- name: Install aptitude.
+  raw: apt-get install -y aptitude
+
+- name: Update all packages (Debian and Ubuntu).
+  apt:
+    upgrade: full
+    update_cache: yes
+  register: update_packages

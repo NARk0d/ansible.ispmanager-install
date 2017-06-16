@@ -1,0 +1,47 @@
+---
+- hosts: ispmanager
+  gather_facts: False
+  pre_tasks:
+    - name: Definition of the distrib.
+      raw: grep -e '^ID=' /etc/os-release | cut -d= -f2
+      register: distrib
+      ignore_errors: True
+
+    - name: Add repositories from Debian
+      raw: |
+        mv /etc/apt/sources.list /etc/apt/sources.list.back; echo -e "
+        deb http://deb.debian.org/debian jessie main contrib non-free
+        deb-src http://deb.debian.org/debian jessie main contrib non-free
+        
+        deb http://deb.debian.org/debian jessie-updates main contrib non-free
+        deb-src http://deb.debian.org/debian jessie-updates main contrib non-free
+        
+        deb http://security.debian.org/ jessie/updates main contrib non-free
+        deb-src http://security.debian.org/ jessie/updates main contrib non-free" > /etc/apt/sources.list
+      when: distrib.stdout == "debian\r\n"
+
+    - name: Test /usr/bin/python
+      raw: test -e /usr/bin/python
+      register: output
+      ignore_errors: True
+
+    - name: Install python for Ansible (Debian and Ubuntu)
+      raw: apt-get clean; apt-get update -y && apt-get install -y python-minimal
+      when: (distrib.stdout == "ubuntu\r\n" or distrib.stdout == "debian\r\n")  and output|failed
+
+    - name: Install python for Ansible (RedHat and CentOS)
+      raw: yum install -y python2 python-simplejson
+      when: (distrib.stdout == "\"rhel\"\r\n" or distrib.stdout == "\"centos\"\r\n") and output|failed
+
+    - setup: # aka gather_facts
+
+  roles:
+# Basic configuring
+    - { role: selinux_disabled , when: ansible_os_family|lower == 'redhat' }
+    - { role: reboot , when: ansible_os_family|lower == 'redhat' and selinux_status.changed }
+    - { role: apparmor_disabled , when: ansible_os_family|lower == 'debian' }
+    - { role: update_all_packages }
+    - { role: reboot , when: update_packages.changed }
+    - { role: install_basic_utilities }
+# ISPmanager install and configuring
+    - { role: ispmanager, isp_activation_key: "", FTP: true, MYSQL: true, WEB: true, SSL: true, MAIL: true, ADD_USER: true, user_name: "www-root" }

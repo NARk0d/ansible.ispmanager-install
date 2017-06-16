@@ -1,0 +1,68 @@
+---
+- name: ISPmanager. Generate new password.
+  shell: /usr/bin/pwgen 10 -c1
+  register: PASS
+
+- name: ISPmanager. Save password in file.
+  shell: echo "{{ user_name }}   {{PASS.stdout}}" > /root/users_password.txt
+
+- name: ISPmanager. Add user "{{ user_name }}"
+  shell: |
+    /usr/local/mgr5/sbin/mgrctl -m ispmgr user.add.user \
+    domain= \
+    fullname= \
+    hfields=emaildomain_ip \
+    ip= \
+    email_inaccess= \
+    emaildomain=off \
+    emaildomain_ip={{ansible_default_ipv4.address}} \
+    emaildomain_name= \
+    ftp_inaccess= \
+    ftp_user=on \
+    ftp_user_name={{user_name}} \
+    limit_cgi=on \
+    limit_cgi_inaccess= \
+    limit_charset=off \
+    limit_db= \
+    limit_db_enabled=on \
+    limit_db_inaccess= \
+    limit_db_users= \
+    limit_db_users_inaccess= \
+    limit_dirindex=index.php \
+    limit_emaildomains= \
+    limit_emaildomains_enabled=on \
+    limit_emaildomains_inaccess= \
+    limit_emails= \
+    limit_emails_inaccess= \
+    limit_ftp_users= \
+    limit_ftp_users_inaccess= \
+    limit_php_cgi_enable=on \
+    limit_php_cgi_version=native \
+    limit_php_fpm_version=native \
+    limit_php_mode=php_mode_mod \
+    limit_php_mode_cgi=on \
+    limit_php_mode_cgi_inaccess= \
+    limit_php_mode_fcgi_nginxfpm=on \
+    limit_php_mode_fcgi_nginxfpm_inaccess= \
+    limit_php_mode_mod=on \
+    limit_php_mode_mod_inaccess= \
+    limit_shell=on \
+    limit_shell_inaccess= \
+    limit_ssl=on \
+    limit_ssl_inaccess= \
+    limit_webdomains= \
+    limit_webdomains_enabled=on \
+    limit_webdomains_inaccess= \
+    name={{user_name}} \
+    passwd={{PASS.stdout}} \
+    php_enable=on \
+    preset=\#custom \
+    next=ok \
+    domain= \
+    web_inaccess= \
+    webdomain=off \
+    webdomain_ip= \
+    webdomain_name= \
+    zoom-limit_dirindex=index.php \
+    sok=ok
+

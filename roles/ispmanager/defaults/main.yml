@@ -1,0 +1,22 @@
+---
+isp_activation_key: ""
+FTP: true
+MYSQL: true
+WEB: true
+PHPMYADMIN: true
+SSL: true
+MAIL: true
+ADD_USER: true
+
+# ProFTPd variables
+proftpd_conf: "/etc/proftpd.conf"
+
+# Web variables
+packagegroup_apache: "apache-itk"
+
+# Mail variables
+exim_service: "exim"
+exim_conf: "/etc/exim/exim.conf"
+
+# User params
+user_name: "www-root"

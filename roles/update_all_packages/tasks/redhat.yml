@@ -1,0 +1,7 @@
+---
+- name: Update all packages (RedHat and CentOS).
+  yum:
+    name: '*'
+    state: latest
+    update_cache: yes
+  register: update_packages

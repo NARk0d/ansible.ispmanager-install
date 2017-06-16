@@ -1,0 +1,13 @@
+---
+- name: Install EPEL repository.
+  yum:
+    name: epel-release
+    state: latest
+    update_cache: yes
+
+- name: Install basic utilities.
+  yum:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items: "{{install_packages}}"

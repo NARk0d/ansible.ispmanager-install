@@ -1,0 +1,11 @@
+---
+- name: Install libselinux-python
+  yum:
+    name: libselinux-python
+    state: latest
+
+- name: Disabled SElinux.
+  selinux:
+    state: disabled
+  register: selinux_status
+

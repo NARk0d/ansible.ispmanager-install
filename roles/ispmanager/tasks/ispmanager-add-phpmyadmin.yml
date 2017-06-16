@@ -1,0 +1,8 @@
+---
+- name: ISPmanager. Install phpMyAdmin.
+  shell: /usr/local/mgr5/sbin/mgrctl -m ispmgr feature.edit elid=phpmyadmin package_phpmyadmin=on sok=ok
+
+- name: Pause 1 minute
+  pause:
+    minutes: 1
+

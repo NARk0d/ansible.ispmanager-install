@@ -1,0 +1,2 @@
+[ispmanager]
+trial.host ansible_ssh_host=123.123.123.123 ansible_port=2200 ansible_ssh_user=root

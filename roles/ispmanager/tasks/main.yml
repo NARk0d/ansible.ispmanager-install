@@ -1,0 +1,40 @@
+---
+- name: Disabled epel-repository.
+  shell: yum-config-manager --disable epel 
+  when: ansible_os_family|lower == "redhat"
+
+- name: Download ISPmanager install script.
+  get_url:
+    url: http://download.ispsystem.com/install.5.sh
+    dest: /root/install.5.sh
+    mode: 0700
+
+- name: Install ISPmanager minimall.
+  raw: echo -e "s\n2\n{{ isp_activation_key }}" | bash /root/install.5.sh --ignore-hostname --no-letsencrypt ISPmanager
+
+- name: Enabled epel-repository.
+  shell: yum-config-manager --enable epel
+  when: ansible_os_family|lower == "redhat"
+
+# Configuring ISPmanager
+
+- include: ispmanager-add-proftpd.yml 
+  when: FTP
+
+- include: ispmanager-add-mysql.yml
+  when: MYSQL
+
+- include: ispmanager-add-web.yml
+  when: WEB
+
+- include: ispmanager-add-phpmyadmin.yml
+  when: PHPMYADMIN
+
+- include: ispmanager-add-ssl.yml
+  when: SSL
+
+- include: ispmanager-add-mail.yml
+  when: MAIL
+
+- include: ispmanager-add-user.yml
+  when: ADD_USER

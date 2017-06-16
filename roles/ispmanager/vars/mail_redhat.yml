@@ -1,0 +1,4 @@
+---
+exim_service: "exim"
+exim_conf: "/etc/exim/exim.conf"
+

@@ -1,0 +1,28 @@
+---
+install_packages:
+  - bash-completion
+  - bind-utils
+  - net-tools
+  - wget
+  - curl
+  - telnet
+  - mtr
+  - strace
+  - lsof
+  - atop
+  - htop
+  - mytop
+  - ncdu
+  - mc
+  - iotop
+  - lvm2
+  - rsync
+  - git
+  - vim
+  - nano
+  - nload
+  - pwgen
+  - screen
+  - tmux
+  - psmisc
+  - yum-utils 
