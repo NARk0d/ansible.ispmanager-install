@@ -10,7 +10,7 @@
     mode: 0700
 
 - name: Install ISPmanager minimall.
-  raw: echo -e "s\n2\n{{ isp_activation_key }}" | bash /root/install.5.sh --ignore-hostname --no-letsencrypt ISPmanager
+  raw: echo -e "y\ns\n2\n{{ isp_activation_key }}" | bash /root/install.5.sh --ignore-hostname --no-letsencrypt ISPmanager
 
 - name: Enabled epel-repository.
   shell: yum-config-manager --enable epel
